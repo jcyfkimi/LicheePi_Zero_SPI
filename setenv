@@ -1,0 +1,63 @@
+#!/bin/sh
+
+if [ "$(basename "$0")" = "setenv" ]; then
+    echo "You must source this script, not run it!" 1>&2
+    exit 1
+fi
+
+# Set project paths
+PROJECT_ROOT=`pwd`
+PROJECT_BIN=${PROJECT_ROOT}/bin
+PROJECT_IMG=${PROJECT_ROOT}/img
+PROJECT_FS=${PROJECT_IMG}/fs
+PROJECT_INSTALL=${PROJECT_FS}/shadow_root
+
+# Setup toolchain
+TOOLCHAINDIR=${PROJECT_ROOT}/toolchain
+SOURCETOOLCHAINDIR=${TOOLCHAINDIR}/arm-linux-gnueabihf
+SOURCETOOLCHAIN=${SOURCETOOLCHAINDIR}/bin/arm-linux-gnueabihf-
+
+
+
+echo -n "=== Preparing the toolchain, please waiting... ==="
+echo
+if [ ! -d ${SOURCETOOLCHAINDIR} ]; then \
+    if [ ! -f ${TOOLCHAINDIR}/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz ]; then \
+        echo "Must install toolchain ${SOURCETOOLCHAINDIR} before enter project"; \
+        exit 1; \
+    fi; \
+    tar xJf ${TOOLCHAINDIR}/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz -C ${TOOLCHAINDIR}; \
+    ln -sf ${TOOLCHAINDIR}/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf ${TOOLCHAINDIR}/arm-linux-gnueabihf; \
+fi
+
+echo -n "==== Done ===="
+echo 
+
+echo -n "=== Preparing the rootfs, please waiting... ==="
+echo
+if [ ! -d ${PROJECT_INSTALL} ]; then \
+    if [ ! -f ${PROJECT_FS}/rootfs.tgz ]; then \
+        echo "Missing rootfs.tar.gz, please check"; \
+        exit 1; \
+    fi; \
+    mkdir -p ${PROJECT_INSTALL}; \
+    tar zxf ${PROJECT_FS}/rootfs.tgz -C ${PROJECT_INSTALL}; \
+fi
+
+echo -n "==== Done ===="
+echo 
+
+export PROJECT_ROOT PROJECT_BIN PROJECT_IMG PROJECT_INSTALL TOOLCHAINDIR SOURCETOOLCHAINDIR SOURCETOOLCHAIN
+export PATH=$PATH:$SOURCETOOLCHAINDIR/bin
+
+
+echo PROJECT_ROOT=$PROJECT_ROOT
+echo PROJECT_BIN=$PROJECT_BIN
+echo PROJECT_IMG=$PROJECT_IMG
+echo PROJECT_FS=$PROJECT_FS
+echo PROJECT_INSTALL=$PROJECT_INSTALL
+echo SOURCETOOLCHAINDIR=$SOURCETOOLCHAINDIR
+echo SOURCETOOLCHAIN=$SOURCETOOLCHAIN
+
+echo
+echo
