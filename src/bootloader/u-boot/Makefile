@@ -246,6 +246,9 @@ ifeq ($(HOSTARCH),$(ARCH))
 CROSS_COMPILE ?=
 endif
 
+ARCH ?= arm
+CROSS_COMPILE ?= $(SOURCETOOLCHAIN)
+
 KCONFIG_CONFIG	?= .config
 export KCONFIG_CONFIG
 
