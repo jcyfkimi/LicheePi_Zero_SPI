@@ -6,6 +6,6 @@ How to build:
 
     . ./setenv
 
-    make
+    make all
 
 
