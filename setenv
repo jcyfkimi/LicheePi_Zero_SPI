@@ -33,6 +33,20 @@ fi
 echo -n "==== Done ===="
 echo 
 
+echo -n "=== Preparing the rootfs, please waiting... ==="
+echo
+if [ ! -d ${PROJECT_ROOT}/src/rootfs/etc ]; then \
+    if [ ! -f ${PROJECT_FS}/rootfs.tgz ]; then \
+        echo "Rootfs file missing, please have a check."; \
+        exit 1; \
+    fi; \
+    tar xzf ${PROJECT_FS}/rootfs.tgz -C ${PROJECT_ROOT}/src/rootfs; \
+fi
+
+echo -n "==== Done ===="
+echo 
+
+
 export PROJECT_ROOT PROJECT_BIN PROJECT_IMG PROJECT_INSTALL TOOLCHAINDIR SOURCETOOLCHAINDIR SOURCETOOLCHAIN
 export PATH=$PATH:$SOURCETOOLCHAINDIR/bin
 
