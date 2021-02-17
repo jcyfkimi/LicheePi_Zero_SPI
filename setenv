@@ -33,20 +33,6 @@ fi
 echo -n "==== Done ===="
 echo 
 
-echo -n "=== Preparing the rootfs, please waiting... ==="
-echo
-if [ ! -d ${PROJECT_INSTALL} ]; then \
-    if [ ! -f ${PROJECT_FS}/rootfs.tgz ]; then \
-        echo "Missing rootfs.tar.gz, please check"; \
-        exit 1; \
-    fi; \
-    mkdir -p ${PROJECT_INSTALL}; \
-    tar zxf ${PROJECT_FS}/rootfs.tgz -C ${PROJECT_INSTALL}; \
-fi
-
-echo -n "==== Done ===="
-echo 
-
 export PROJECT_ROOT PROJECT_BIN PROJECT_IMG PROJECT_INSTALL TOOLCHAINDIR SOURCETOOLCHAINDIR SOURCETOOLCHAIN
 export PATH=$PATH:$SOURCETOOLCHAINDIR/bin
 
