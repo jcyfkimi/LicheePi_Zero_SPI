@@ -4,12 +4,12 @@ ifndef PROJECT_ROOT
 	$(error You must first source the BSP environment: ". ./setenv")
 endif
 
-INSTALL_DIRS = src/bootloader src/kernel/linux src/rootfs src/sysapps
-CLEAN_DIRS = src/bootloader src/kernel/linux src/rootfs src/sysapps
+INSTALL_DIRS = src/bootloader src/kernel/linux src/kmods src/rootfs src/sysapps
+CLEAN_DIRS = src/bootloader src/kernel/linux src/kmods src/rootfs src/sysapps
 
-all: bootloader kernel sysapps rootfs FW
+all: bootloader kernel kmods sysapps rootfs FW
 
-.PHONY: bootloader kernel sysapps rootfs FW
+.PHONY: bootloader kernel kmods sysapps rootfs FW
 
 bootloader:
 	@(if [ ! -f $(PROJECT_ROOT)/src/bootloader/u-boot/.config ]; then \
@@ -27,6 +27,9 @@ kernel:
 	$(MAKE) -C src/kernel/linux INSTALL_MOD_PATH=$(PROJECT_INSTALL) modules_install
 	cp $(PROJECT_ROOT)/src/kernel/linux/arch/arm/boot/zImage $(PROJECT_IMG)/kernel
 	cp $(PROJECT_ROOT)/src/kernel/linux/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dtb $(PROJECT_IMG)/dtb
+
+kmods:
+	$(MAKE) -C src/$@
 
 sysapps:
 	$(MAKE) -C src/$@
