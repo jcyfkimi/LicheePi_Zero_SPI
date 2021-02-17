@@ -29,7 +29,7 @@ kernel:
 	cp $(PROJECT_ROOT)/src/kernel/linux/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dtb $(PROJECT_IMG)/dtb
 
 sysapps:
-	$(MAKE) -c src/sysapps
+	$(MAKE) -C src/$@
 
 rootfs:
 	$(MAKE) -C src/$@
