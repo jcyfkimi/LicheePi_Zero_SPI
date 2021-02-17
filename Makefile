@@ -4,8 +4,8 @@ ifndef PROJECT_ROOT
 	$(error You must first source the BSP environment: ". ./setenv")
 endif
 
-INSTALL_DIRS = src/bootloader src/kernel src/sysapps
-CLEAN_DIRS = src/bootloader src/kernel src/sysapps
+INSTALL_DIRS = src/bootloader src/kernel/linux src/sysapps
+CLEAN_DIRS = src/bootloader src/kernel/linux src/sysapps
 
 all: bootloader kernel sysapps
 
@@ -19,7 +19,13 @@ bootloader:
 	cp $(PROJECT_ROOT)/src/bootloader/u-boot/u-boot-sunxi-with-spl.bin $(PROJECT_IMG)/loader
 
 kernel:
-	$(MAKE) -C src/kernel
+	@(if [ ! -f $(PROJECT_ROOT)/src/kernel/linux/.config ]; then \
+		$(MAKE) -C src/kernel/linux licheepi_zero_defconfig; \
+	fi)
+	$(MAKE) -C src/kernel/linux
+	$(MAKE) -C src/kernel/linux INSTALL_MOD_PATH=$(PROJECT_INSTALL) modules
+	$(MAKE) -C src/kernel/linux INSTALL_MOD_PATH=$(PROJECT_INSTALL) modules_install
+	cp $(PROJECT_ROOT)/src/kernel/linux/arch/arm/boot/zImage $(PROJECT_IMG)/kernel
 
 sysapps:
 	$(MAKE) -c src/sysapps
