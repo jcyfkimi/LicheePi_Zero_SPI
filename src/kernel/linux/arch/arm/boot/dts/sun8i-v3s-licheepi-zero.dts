@@ -74,6 +74,17 @@
 		reg = <0x48>;
 	};
 };
+&spi0 {
+    status = "ok";
+
+    mx25l25635e:mx25l25635e@0 {
+        compatible = "jedec,spi-nor";
+        reg = <0x0>;
+        spi-max-frequency = <50000000>;
+        #address-cells = <1>;
+        #size-cells = <1>;
+    };
+};
 
 &uart0 {
 	pinctrl-0 = <&uart0_pins_a>;

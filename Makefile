@@ -26,6 +26,7 @@ kernel:
 	$(MAKE) -C src/kernel/linux INSTALL_MOD_PATH=$(PROJECT_INSTALL) modules
 	$(MAKE) -C src/kernel/linux INSTALL_MOD_PATH=$(PROJECT_INSTALL) modules_install
 	cp $(PROJECT_ROOT)/src/kernel/linux/arch/arm/boot/zImage $(PROJECT_IMG)/kernel
+	cp $(PROJECT_ROOT)/src/kernel/linux/arch/arm/boot/dts/sun8i-v3s-licheepi-zero.dtb $(PROJECT_IMG)/dtb
 
 sysapps:
 	$(MAKE) -c src/sysapps
