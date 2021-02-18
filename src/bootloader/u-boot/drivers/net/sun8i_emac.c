@@ -460,12 +460,9 @@ static int parse_phy_pins(struct udevice *dev)
 					      "allwinner,pins", i, NULL);
 		if (!pin_name)
 			break;
-		if (pin_name[0] != 'P')
+		pin = sunxi_gpio_parse_pin_name(pin_name);
+		if (pin < 0)
 			continue;
-		pin = (pin_name[1] - 'A') << 5;
-		if (pin >= 26 << 5)
-			continue;
-		pin += simple_strtol(&pin_name[2], NULL, 10);
 
 		sunxi_gpio_set_cfgpin(pin, SUN8I_GPD8_GMAC);
 		sunxi_gpio_set_drv(pin, drive);
